@@ -5,7 +5,7 @@ Simple contact management system.
 - IContactManager interface - AddContact, UpdateContact, DeleteContact and SearchContacts methods.
 */
 using System;
-
+using System.ComponentModel.DataAnnotations;
 namespace ContactManagementSystem{
     public interface IContactManager
     {
@@ -61,8 +61,20 @@ namespace ContactManagementSystem{
     }
     public class Person 
     { 
+        [Required(ErrorMessage = "First name is required.")]
+        [MaxLength(30, ErrorMessage = "First name cannot be longer than 30 characters.")]
+        [MinLength(2, ErrorMessage = "First name cannot be shorter than 2 characters.")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "First name can only contain letters.")]
         public string FirstName { get; set; }
+        
+        [Required(ErrorMessage = "Last name is required.")]
+        [MaxLength(30, ErrorMessage = "Last name cannot be longer than 30 characters.")]
+        [MinLength(2, ErrorMessage = "Last name cannot be shorter than 2 characters.")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Last name can only contain letters.")]
         public string LastName { get; set; }
+
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
         public string Email { get; set; }
 
         public Person(string firstName, string lastName, string email)
@@ -75,7 +87,12 @@ namespace ContactManagementSystem{
     
     public class Contact : Person 
     {
+        [Required(ErrorMessage = "Phone number is required.")]
+        [MaxLength(20, ErrorMessage = "Phone number cannot be longer than 20 characters.")]
+        [Phone(ErrorMessage = "Invalid phone number.")]
         public string PhoneNumber { get; set; }
+        
+        [Required(ErrorMessage = "Address is required.")]
         public string Address { get; set; }
 
         public Contact(string firstName, string lastName, string email, string phoneNumber, string address)
